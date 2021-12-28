@@ -47,10 +47,13 @@ function create() {
     
     this.socket.on('currentPlayers', function (players) {
         Object.keys(players).forEach(function (id) {
-            console.log(player)
+            console.log(player);
+            console.log(players[id].playerId);
+            console.log(self.socket.id);
             if (players[id].playerId === self.socket.id) {
                 // // addPlayer(self, players[id]);
                 // player = this.physics.add.sprite(players[id]['x'], players[id]['y'], 'p1')
+                // self.player = this.physics.add.sprite(50, 50, 'p1')
                 console.log('adding one single player')
 
             } else {
@@ -62,7 +65,10 @@ function create() {
         });
     });
     this.socket.on('newPlayer', function (playerInfo) {
-        addOtherPlayer(self, playerInfo);
+        console.log('recieving new player broadcast')
+        var newPlayer = self.physics.add.sprite(playerInfo.x, playerInfo.y, 'p2');
+        newPlayer.playerId = playerInfo.playerId;
+        self.otherPlayers.add(newPlayer);
     });
     this.socket.on('playerDisconnected', function (playerId) {
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
@@ -74,8 +80,8 @@ function create() {
 
     this.socket.on('playerMoved', function (playerInfo) {
         console.log('player moved')
-        console.log(playerInfo)
-        console.log(self.otherPlayers)
+        // console.log(playerInfo)
+        // console.log(self.otherPlayers)
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
             if (playerInfo.playerId === otherPlayer.playerId) {
                 otherPlayer.setPosition(playerInfo.x, playerInfo.y);
@@ -83,6 +89,7 @@ function create() {
             
         });
     });
+
     console.log('finished create')
 }
 

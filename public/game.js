@@ -5,7 +5,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true
+            debug: false
         }
     },
     scene: {
@@ -40,10 +40,12 @@ function preload() {
     for (var i = 0; i < 6; i++) {
         this.load.image('bird' + i, 'bird' + i + '.png');
     };
+    this.load.image('bg', 'bg.png');
 }
 
 function create() {
 
+    this.add.tileSprite(400, 300, 800, 600, 'bg');
     this.registry.setValue('findBirdNumber', 0)
 
     console.log(this.registry)
@@ -148,15 +150,16 @@ function create() {
 
         imageDisplay = true;
     });
-    scoreText = this.add.text(16, 16, score, { fontSize: '32px', fill: '#000' });
-    findBirdText = this.add.text(centerX - 100, 16, 'find this bird!', { fontSize: '20px', fill: '#000' });
+    scoreText = this.add.text(16, 16, score, { fontSize: '32px', fill: '#FFF' });
+    findBirdText = this.add.text(centerX - 100, 16, 'find this bird!', { fontSize: '20px', fill: '#FFF' });
     console.log(findBirdNumber)
     console.log('what is findBirdNumber')
-    findBirdImage = this.add.image(centerX + 100, 30, 'bird' + this.registry.values.findBirdNumber);
+    var circle = this.add.circle(centerX + 110, 30, 22, 0xFFFFFF);
+    findBirdImage = this.add.image(centerX + 110, 30, 'bird' + this.registry.values.findBirdNumber);
     findBirdImage.displayHeight = 40;
     findBirdImage.scaleX = findBirdImage.scaleY;
 
-    personWhoFoundBirdText = this.add.text(30, gameHeight - 30, '', { fontSize: '20px', fill: '#000' });
+    personWhoFoundBirdText = this.add.text(30, gameHeight - 30, '', { fontSize: '20px', fill: '#FFF' });
     personWhoFoundBirdText.visible = false;
 
     gameOverText = this.add.text(centerX - 100, centerY - 16, 'Game Over', { fontSize: '20px', fill: '#FF0000' });
@@ -208,9 +211,9 @@ function update() {
         findBirdImage.destroy();
         imageDisplay = false;
         console.log(this.findBirdNumber)
-        findBirdImage = this.add.image(centerX + 100, 20, 'bird' + this.registry.values.findBirdNumber);
-        findBirdImage.displayWidth = 30;
-        findBirdImage.scaleY = findBirdImage.scaleX;
+        findBirdImage = this.add.image(centerX + 110, 30, 'bird' + this.registry.values.findBirdNumber);
+        findBirdImage.displayHeight = 40;
+        findBirdImage.scaleX = findBirdImage.scaleY;
 
     }
     // console.log(this.registry.get('findBirdNumber'))

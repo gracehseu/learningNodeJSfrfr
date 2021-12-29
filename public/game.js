@@ -13,7 +13,7 @@ var config = {
         create: create,
         update: update
     },
-    backgroundColor: '#ADD8E6'
+    backgroundColor: '#547C58'
 };
 
 var game = new Phaser.Game(config);

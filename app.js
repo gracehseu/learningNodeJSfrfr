@@ -20,6 +20,18 @@ server.listen(8080, () => {
     console.log('Server listening on http://localhost:8080');
 });
 
+// move into utils
+function randomInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function generateRandomNumberListInRange(size, min, max){
+    const arr = []
+    for (let i = 0; i < size; i++) {
+        arr.push(randomInteger(min, max))
+    }
+    return arr
+}
+
 io.on('connection', function (socket) {
     // console.log('a user connected');
     // create a new player and add it to our players object
@@ -30,15 +42,18 @@ io.on('connection', function (socket) {
         'playerId': socket.id,
         // team: (Math.floor(Math.random() * 2) == 0) ? 'red' : 'blue'
     };
-    birdCoordinates =  [
-        { name: 'bird0', x: 100, y: 100 }, 
-        { name: 'bird1', x: 225, y: 512 }, 
-        { name: 'bird2', x: 352, y: 243 }, 
-        { name: 'bird3', x: 459, y: 489 }, 
-        { name: 'bird4', x: 589, y: 359 }, 
-        { name: 'bird5', x: 623, y: 96 }]
+    birdInfo =  {
+        birdLookingForNumber: 0,
+        birdCoordinates : [
+            { name: 0, x: 100, y: 100 },
+            { name: 1, x: 225, y: 512 },
+            { name: 2, x: 352, y: 243 },
+            { name: 3, x: 459, y: 489 },
+            { name: 4, x: 589, y: 359 },
+            { name: 5, x: 623, y: 96 }]
+        }
 
-    socket.emit('birdCoordinates', birdCoordinates)
+    socket.emit('birdInfo', birdInfo)
     // send the players object to the new player
     socket.emit('currentPlayers', players);
     // update all other players of the new player
@@ -56,5 +71,12 @@ io.on('connection', function (socket) {
         players[socket.id].y = movementData.y;
         socket.broadcast.emit('playerMoved', players[socket.id]);
     });
+    socket.on('playerFoundTheBird', function(){
+        birdAndFoundInfo = {
+            birdFindNumber: randomInteger(0, 5),
+            personWhoFoundBird: socket.id 
+        }
+        io.sockets.emit('someoneFoundBirdAndNewBird', birdAndFoundInfo)
+    })
 });
 

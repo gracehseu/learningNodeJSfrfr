@@ -21,40 +21,41 @@ var player;
 var cursors;
 var newPlayer;
 
-function addPlayer(self, config ){
-    self.player = self.physics.add.sprite(config['x'], config['y'], 'p1')
-    console.log('added player')
-}
-
-// function addOtherPlayer(self, config) {
-//     self.physics.add.sprite(config.x, config.y, 'p2')
-//     self.otherPlayers.add(otherPlayer);
-//     console.log('added another player')
-// }
-
 function preload() {
-    // this.load.image('sky', 'bg.png');
-    this.load.image('p1', 'p1.png');
-    this.load.image('p2', 'p2.png');
+    // load bird images
+    for (var i = 0; i < 6; i++) {
+        this.load.image('bird' + i, 'bird' + i + '.png');
+    };
 }
 
 function create() {
-    cursors = this.input.keyboard.createCursorKeys();
-    player = this.physics.add.sprite(50, 50, 'p1')
+    // cursors = this.input.keyboard.createCursorKeys();
     var self = this;
     this.socket = io();
     this.otherPlayers = this.physics.add.group();
-    
+    // add the birds to their coordinates
+    this.birds = this.physics.add.group();
+
+    this.socket.on('birdCoordinates', function (birdCoordinates) {
+        console.log(birdCoordinates);
+        birdCoordinates.forEach((item, idx) => {
+            console.log(item)
+            var bird = self.physics.add.sprite(item.x, item.y, item.name);
+            bird.setScale(.3)
+            self.birds.add(bird)
+            console.log(self.birds)
+        });
+
+    });
+
     this.socket.on('currentPlayers', function (players) {
         Object.keys(players).forEach(function (id) {
             console.log(player);
             console.log(players[id].playerId);
             console.log(self.socket.id);
             if (players[id].playerId === self.socket.id) {
-                // // addPlayer(self, players[id]);
-                // player = this.physics.add.sprite(players[id]['x'], players[id]['y'], 'p1')
-                // self.player = this.physics.add.sprite(50, 50, 'p1')
                 console.log('adding one single player')
+
 
             } else {
                 var newPlayer = self.physics.add.sprite(config.x, config.y, 'p2');
@@ -79,7 +80,7 @@ function create() {
     });
 
     this.socket.on('playerMoved', function (playerInfo) {
-        console.log('player moved')
+        // console.log('player moved')
         // console.log(playerInfo)
         // console.log(self.otherPlayers)
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
@@ -95,23 +96,23 @@ function create() {
 
 function update() {
     // console.log(player);
-    this.socket.emit('playerMovement', { 'x': player.x, 'y': player.y});
+    // this.socket.emit('playerMovement', { 'x': player.x, 'y': player.y});
 
 
 
-    player.setVelocity(0);
+    // player.setVelocity(0);
 
-    if (cursors.left.isDown) {
-        player.setVelocityX(-300);
-    }
-    else if (cursors.right.isDown) {
-        player.setVelocityX(300);
-    }
+    // if (cursors.left.isDown) {
+    //     player.setVelocityX(-300);
+    // }
+    // else if (cursors.right.isDown) {
+    //     player.setVelocityX(300);
+    // }
 
-    if (cursors.up.isDown) {
-        player.setVelocityY(-300);
-    }
-    else if (cursors.down.isDown) {
-        player.setVelocityY(300);
-    }
+    // if (cursors.up.isDown) {
+    //     player.setVelocityY(-300);
+    // }
+    // else if (cursors.down.isDown) {
+    //     player.setVelocityY(300);
+    // }
 }

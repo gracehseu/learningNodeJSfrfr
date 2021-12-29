@@ -4,6 +4,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
 var players = {} // keeping track of the players
+var birdCoordinates;
 
 // const server = require('express')();
 // const http = require('http').createServer(server);
@@ -20,15 +21,24 @@ server.listen(8080, () => {
 });
 
 io.on('connection', function (socket) {
-    console.log('a user connected');
+    // console.log('a user connected');
     // create a new player and add it to our players object
     players[socket.id] = {
         // rotation: 0,
-        'x': 50,
-        'y': 50,
+        score : 0,
+        // 'y': 50,
         'playerId': socket.id,
         // team: (Math.floor(Math.random() * 2) == 0) ? 'red' : 'blue'
     };
+    birdCoordinates =  [
+        { name: 'bird0', x: 100, y: 100 }, 
+        { name: 'bird1', x: 225, y: 512 }, 
+        { name: 'bird2', x: 352, y: 243 }, 
+        { name: 'bird3', x: 459, y: 489 }, 
+        { name: 'bird4', x: 589, y: 359 }, 
+        { name: 'bird5', x: 623, y: 96 }]
+
+    socket.emit('birdCoordinates', birdCoordinates)
     // send the players object to the new player
     socket.emit('currentPlayers', players);
     // update all other players of the new player

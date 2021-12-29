@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "node your-script.js"
+  },
   "dependencies": {
     "express": "^4.17.2",
     "phaser": "^3.55.2",

@@ -79,7 +79,7 @@ function create() {
     });
 
     this.socket.on('playerMoved', function (playerInfo) {
-        console.log('player moved')
+        // console.log('player moved')
         // console.log(playerInfo)
         // console.log(self.otherPlayers)
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {

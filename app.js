@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
 });
 
 server.listen(process.env.PORT || 3000, () => {
-    console.log('Server listening on http://localhost:8080');
+    console.log('Server listening on http://localhost:3000');
 });
 
 // move into utils
@@ -34,6 +34,10 @@ function generateRandomNumberListInRange(size, min, max){
 }
 
 io.on('connection', function (socket) {
+
+    socket.on('connectedRoom', function(info) {
+        socket.join(info.room)
+    })
     // console.log('a user connected');
     // create a new player and add it to our players object
     players[socket.id] = {

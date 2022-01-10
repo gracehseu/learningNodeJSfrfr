@@ -55,7 +55,7 @@ var birdEvents = require('./birdsocket.js')(io)
 
 app.use(express.static(__dirname + '/public'));
 
-app.get(['/'], function (req, res) {
+app.get('/', function (req, res) {
     res.redirect('/lobby')
 });
 
@@ -70,7 +70,7 @@ app.get(['/lobby'], function (req, res) {
 
 
 app.post(['/lobby'], function (req, res) {
-    console.log('lobby post')
+    console.log('lobby')
     res.redirect(302, '/room/' + generateRandomRoom());
 
 });

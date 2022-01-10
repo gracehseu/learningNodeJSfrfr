@@ -1,0 +1,12 @@
+doctype html
+html
+  include header.pug
+  body
+    form(action='/user' method='POST')
+        label name: #{ username }
+        br
+        input(type='text' name='username' value=username)
+        br
+        br
+        button save
+

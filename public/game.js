@@ -38,9 +38,9 @@ var findBirdNumber;
 function preload() {
     // load bird images
     for (var i = 0; i < 6; i++) {
-        this.load.image('bird' + i, 'bird' + i + '.png');
+        this.load.image('bird' + i, '/bird' + i + '.png');
     };
-    this.load.image('bg', 'bg.png');
+    this.load.image('bg', '/bg.png');
 }
 
 function create() {
@@ -127,7 +127,8 @@ function create() {
         console.log(birdAndFoundInfo)
         self.registry.setValue('findBirdNumber', birdAndFoundInfo.birdFindNumber)
         console.log(self.registry)
-        personWhoFoundBird = birdAndFoundInfo.personWhoFoundBird;
+        // personWhoFoundBird = birdAndFoundInfo.personWhoFoundBird;
+        personWhoFoundBird = birdAndFoundInfo.playerName;
 
         // callback function to delete that someone found the bird
         personFoundBirdEventConfig = {
@@ -137,7 +138,7 @@ function create() {
         }
         self.time.addEvent(personFoundBirdEventConfig);
 
-        personWhoFoundBirdText.setText(personWhoFoundBird + ' found the bird');
+        personWhoFoundBirdText.setText(personWhoFoundBird + ' found the bird!');
         personWhoFoundBirdText.visible = true;
 
         findBirdImage.destroy();

@@ -7,6 +7,7 @@ var redis = require('redis')
 
 var redisClient = redis.createClient({
     legacyMode: true,
+    url: process.env.REDIS_URL
 });
 
 (async () => {

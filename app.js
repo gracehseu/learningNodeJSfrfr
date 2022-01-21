@@ -3,10 +3,14 @@ var Server = require("http").Server;
 var session = require("express-session");
 var RedisStore = require("connect-redis")(session);
 var redis = require('redis')
+
+
 var redisClient = redis.createClient({
     legacyMode: true,
 });
-redisClient.connect()
+
+
+await redisClient.connect()
 var cookieParser = require('cookie-parser')
 var pug = require('pug')
 

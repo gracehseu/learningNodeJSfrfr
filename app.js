@@ -3,7 +3,9 @@ var Server = require("http").Server;
 var session = require("express-session");
 var RedisStore = require("connect-redis")(session);
 var redis = require('redis')
-var redisClient = redis.createClient();
+var redisClient = redis.createClient({
+    legacyMode: true,
+});
 redisClient.connect()
 var cookieParser = require('cookie-parser')
 var pug = require('pug')
@@ -24,7 +26,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 
 var sessionMiddleware = session({
-    // store: new RedisStore({ client: redisClient }), // XXX redis server config
+    store: new RedisStore({ client: redisClient }), // XXX redis server config
     secret: "password",
     resave: false,
     saveUninitialized: true,
@@ -61,9 +63,12 @@ app.get('/', function (req, res) {
 
 app.get(['/lobby'], function (req, res) {
     if (typeof req.session.username === "undefined") {
-        req.session.username = "anonymouse"}
+        req.session.username = "anonymouse"
+        req.session.picture = "user5"
+    }
     var info = {
-        username: req.session.username
+        username: req.session.username,
+        picture: req.session.picture
     }
     res.render('lobby', info)
 });
@@ -77,9 +82,12 @@ app.post(['/lobby'], function (req, res) {
 
 app.get(['/user'], function (req, res) {
     if (typeof req.session.username === "undefined") {
-        req.session.username = "anonymouse";}
+        req.session.username = "anonymouse"
+        req.session.picture = "user5"
+    }
     var info = {
-        username: req.session.username
+        username: req.session.username,
+        picture: req.session.picture
     }
     res.render('user', info)
 });
@@ -88,8 +96,9 @@ app.get(['/user'], function (req, res) {
 app.post(['/user'], function (req, res) {
     
     req.session.username = req.body.username
+    req.session.picture = req.body.userPicture
     req.session.save()
-    console.log(req.session.id)
+    // console.log(req.session.id)
     res.redirect(302, '/user');
 
 });
@@ -98,12 +107,15 @@ app.post(['/user'], function (req, res) {
 
 app.get("/room/:randomRoom", (req, res) => {
     if (typeof req.session.username === "undefined") {
-        req.session.username = "anonymouse";}
+        req.session.username = "anonymouse"
+        req.session.picture = "user5"
+    }
     console.log('in ' + req.params.randomRoom)
     // console.log(req.session.id)
     req.session.room = req.params.randomRoom
     var info = {
-        username: req.session.username
+        username: req.session.username,
+        picture: req.session.picture
     }
     // console.log(req.session)
     // res.sendFile(__dirname + '/public/room.html', info);
@@ -124,5 +136,6 @@ function generateRandomRoom() {
 
 
 server.listen(process.env.PORT || 3000, () => {
-    console.log('Server listening on http://localhost:3000');
+    serverPort = process.env.PORT || 3000
+    console.log('Server listening on ' + serverPort);
 });

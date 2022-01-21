@@ -5,7 +5,9 @@ head
             integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
             crossorigin="anonymous")
     script(src='/socket.io/socket.io.js')
+    p(align='left') hi #{username} and welcome to the WEB PARTAYYY
     p(align='left')
-        a(href='/lobby', style="text-decoration:none;color:black;") hi #{username} and welcome to the WEB PARTAYYY
+        a(href='/lobby', style="text-decoration:none;color:black;") lobby
     p(align='right')
-        a(href='/user', style="text-decoration:none;color:black;") user
+        img(src= '/' + picture + '.png')
+        a(href='/user', style="text-decoration:none;color:black;") #{username}

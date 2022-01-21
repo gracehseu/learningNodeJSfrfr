@@ -3,7 +3,22 @@ html
   include header.pug
   body
     form(action='/user' method='POST')
+        br
+        br
+        img(src='user0.png')
+        input(type="radio", name="userPicture", value='user0', checked=picture=='user0') 
+        img(src='user1.png')
+        input(type="radio", name="userPicture", value='user1', checked=picture=='user1') 
+        img(src='user2.png')
+        input(type="radio", name="userPicture", value='user2', checked=picture=='user2') 
+        img(src='user3.png')
+        input(type="radio", name="userPicture", value='user3', checked=picture=='user3') 
+        img(src='user5.png')
+        input(type="radio", name="userPicture", value='user5', checked=picture=='user5') 
+        br
+        br
         label name: #{ username }
+        br
         br
         input(type='text' name='username' value=username)
         br

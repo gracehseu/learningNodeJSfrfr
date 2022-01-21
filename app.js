@@ -9,8 +9,9 @@ var redisClient = redis.createClient({
     legacyMode: true,
 });
 
-
-await redisClient.connect()
+(async () => {
+    await redisClient.connect();
+})();
 var cookieParser = require('cookie-parser')
 var pug = require('pug')
 
